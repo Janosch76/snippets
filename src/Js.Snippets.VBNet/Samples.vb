@@ -52,8 +52,7 @@ Public Class Samples
         Assert.AreEqual(True, iniFile.SectionNames.Contains("Section 1"))
         Assert.AreEqual(True, iniFile.SectionNames.Contains("Section 2"))
 
-        Dim section1 As IniFileSection = iniFile.Single(Function(s) s.SectionName = "Section 1")
-        Assert.AreEqual("0", section1.Settings("key1"))
-        Assert.AreEqual("C:\Temp", section1.Settings("key2"))
+        Assert.AreEqual("0", iniFile.Sections("Section 1").Settings("key1"))
+        Assert.AreEqual("C:\Temp", iniFile.Sections("Section 1").Settings("key2"))
     End Sub
 End Class
