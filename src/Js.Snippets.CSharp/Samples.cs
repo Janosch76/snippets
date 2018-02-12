@@ -2,7 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
+    using Js.Snippets.CSharp.AsyncUtils;
     using Js.Snippets.CSharp.EnumUtils;
     using Js.Snippets.CSharp.StringUtils;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -56,6 +58,14 @@
 
             var tokenReplacer = new TokenReplacer(new[] { new { Date = new DateTime(2018, 01, 31) } }, '%', '%');
             Assert.AreEqual("20180131", tokenReplacer.ReplaceTokens("%Date:yyyyMMdd%"));
+        }
+
+        [TestMethod]
+        public async Task RepeatedTask_Run()
+        {
+            int counter = 0;
+            await PeriodicTask.Repeat(3, () => counter++, TimeSpan.FromMilliseconds(10));
+            Assert.AreEqual(3, counter);
         }
     }
 }

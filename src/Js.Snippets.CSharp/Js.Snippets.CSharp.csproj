@@ -50,6 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AsyncUtils\PeriodicTask.cs" />
     <Compile Include="EnumUtils\EnumExtensions.cs" />
     <Compile Include="StringUtils\StringExtensions.cs" />
     <Compile Include="Samples.cs" />
