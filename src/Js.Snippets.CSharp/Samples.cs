@@ -67,5 +67,30 @@
             await PeriodicTask.Repeat(3, () => counter++, TimeSpan.FromMilliseconds(10));
             Assert.AreEqual(3, counter);
         }
+
+        [TestMethod]
+        public async Task OrderByCompletion()
+        {
+            var tasks = new Task<int>[]
+            {
+                DelayAndReturn(200),
+                DelayAndReturn(300),
+                DelayAndReturn(100)
+            };
+
+            var results = new List<int>();
+            foreach (var task in tasks.OrderByCompletion())
+            {
+                results.Add(await task);
+            }
+
+            CollectionAssert.AreEqual(new[] { 100, 200, 300 }, results);
+        }
+
+        private static async Task<int> DelayAndReturn(int value)
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(value));
+            return value;
+        }
     }
 }
