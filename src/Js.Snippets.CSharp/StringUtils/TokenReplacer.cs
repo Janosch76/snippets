@@ -7,23 +7,56 @@
     using System.Reflection;
     using System.Text.RegularExpressions;
 
+    /// <summary>
+    /// Token replacement
+    /// </summary>
     public class TokenReplacer
     {
+        /// <summary>
+        /// The default left delimiter
+        /// </summary>
         public const char DEFAULT_LEFT_DELIMITER = '{';
+
+        /// <summary>
+        /// The default right delimiter
+        /// </summary>
         public const char DEFAULT_RIGHT_DELIMITER = '}';
 
+        private readonly object[] tokenValueProviders;
+        private readonly bool throwOnTokenValueNotFound;
         private readonly char leftDelimiter;
         private readonly char rightDelimiter;
-        private readonly object[] tokenValueProviders;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TokenReplacer"/> class.
+        /// </summary>
+        /// <param name="tokenValueProviders">The token value providers.</param>
         public TokenReplacer(IEnumerable<object> tokenValueProviders)
-            : this(tokenValueProviders, TokenReplacer.DEFAULT_LEFT_DELIMITER, TokenReplacer.DEFAULT_RIGHT_DELIMITER)
+            : this(tokenValueProviders, true)
         {
         }
 
-        public TokenReplacer(IEnumerable<object> tokenValueProviders, char leftDelimiter, char rightDelimiter)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TokenReplacer"/> class.
+        /// </summary>
+        /// <param name="tokenValueProviders">The token value providers.</param>
+        /// <param name="throwOnTokenValueNotFound">if set to <c>true</c> throws an exception when a token value is not found.</param>
+        public TokenReplacer(IEnumerable<object> tokenValueProviders, bool throwOnTokenValueNotFound)
+            : this(tokenValueProviders, throwOnTokenValueNotFound, TokenReplacer.DEFAULT_LEFT_DELIMITER, TokenReplacer.DEFAULT_RIGHT_DELIMITER)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TokenReplacer"/> class.
+        /// </summary>
+        /// <param name="tokenValueProviders">The token value providers.</param>
+        /// <param name="throwOnTokenValueNotFound">if set to <c>true</c> throws an exception when a token value is not found.</param>
+        /// <param name="leftDelimiter">The left delimiter.</param>
+        /// <param name="rightDelimiter">The right delimiter.</param>
+        public TokenReplacer(IEnumerable<object> tokenValueProviders, bool throwOnTokenValueNotFound, char leftDelimiter, char rightDelimiter)
         {
             this.tokenValueProviders = tokenValueProviders.ToArray();
+            this.throwOnTokenValueNotFound = throwOnTokenValueNotFound;
             this.leftDelimiter = leftDelimiter;
             this.rightDelimiter = rightDelimiter;
         }
@@ -38,12 +71,36 @@
             get { return Regex.Escape(this.rightDelimiter.ToString()); }
         }
 
+        /// <summary>
+        /// Replaces the tokens in a given template string by the values found in a token value provider object(s).
+        /// </summary>
+        /// <param name="template">The template string.</param>
+        /// <param name="tokenValueProviders">The token value providers.</param>
+        /// <returns>The template string with tokens replaced by the respective values.</returns>
         public static string ReplaceTokens(string template, params object[] tokenValueProviders)
         {
             var tokenReplacer = new TokenReplacer(tokenValueProviders);
             return tokenReplacer.ReplaceTokens(template);
         }
 
+        /// <summary>
+        /// Replaces the tokens in a given template string by the values found in a token value provider object(s).
+        /// </summary>
+        /// <param name="template">The template string.</param>
+        /// <param name="throwOnTokenValueNotFound">A value indicating whether an exception is thrown when a token value is not provided.</param>
+        /// <param name="tokenValueProviders">The token value providers.</param>
+        /// <returns>The template string with tokens replaced by the respective values.</returns>
+        public static string ReplaceTokens(string template, bool throwOnTokenValueNotFound, params object[] tokenValueProviders)
+        {
+            var tokenReplacer = new TokenReplacer(tokenValueProviders, throwOnTokenValueNotFound);
+            return tokenReplacer.ReplaceTokens(template);
+        }
+
+        /// <summary>
+        /// Replaces the tokens in a given template string by the values found in the token value provider object(s) of this instance.
+        /// </summary>
+        /// <param name="template">The template string.</param>
+        /// <returns>The template string with tokens replaced by the respective values.</returns>
         public string ReplaceTokens(string template)
         {
             var tokenPattern = $@"{LDelim}(?<tokenref>\S[^{RDelim}]*){RDelim}";
@@ -51,6 +108,11 @@
             {
                 var tokenRef = TokenRef.Parse(token.Groups["tokenref"].Value);
                 var tokenValue = FindTokenValue(tokenRef.TokenName);
+                if (tokenValue == null)
+                {
+                    continue;
+                }
+
                 if (tokenRef.IsIndexedValue)
                 {
                     tokenValue = GetIndexedValue(tokenValue, tokenRef.Index);
@@ -108,7 +170,14 @@
                 }
             }
 
-            throw new Exception($"Token value for '{tokenName}' not found.");
+            if (this.throwOnTokenValueNotFound)
+            {
+                throw new Exception($"Token value for '{tokenName}' not found.");
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private class TokenRef
@@ -121,7 +190,7 @@
             }
 
             public string TokenName { get; private set; }
-            
+
             public string Index { get; private set; }
 
             public string Format { get; private set; }

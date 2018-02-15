@@ -92,5 +92,23 @@
         {
             return TokenReplacer.ReplaceTokens(template, tokenValueProviders);
         }
+
+        /// <summary>
+        /// Replaces the tokens in this instance, using the public properties of 
+        /// one or more objects as token value providers. For each token reference,
+        /// an optional format string can be used to control the formatting of the 
+        /// token value.
+        /// </summary>
+        /// <param name="template">The template in which to replace tokens.</param>
+        /// <param name="throwOnTokenValueNotFound">A value indicating whether an exception is thrown when a token value is not provided.</param>
+        /// <param name="tokenValueProviders">The token value providers.</param>
+        /// <returns>
+        /// The template string where all tokens have been replaced
+        /// by their respective values.
+        /// </returns>
+        public static string ReplaceTokens(this string template, bool throwOnTokenValueNotFound, params object[] tokenValueProviders)
+        {
+            return TokenReplacer.ReplaceTokens(template, throwOnTokenValueNotFound, tokenValueProviders);
+        }
     }
 }

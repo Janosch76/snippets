@@ -17,7 +17,7 @@
         /// <typeparam name="T">The task result type.</typeparam>
         /// <param name="tasks">The tasks.</param>
         /// <param name="action">The action.</param>
-        /// <returns></returns>
+        /// <returns>A task that asynchronously applies the given action on each task result.</returns>
         public static async Task ForEach<T>(this IEnumerable<Task<T>> tasks, Action<T> action)
         {
             foreach (var task in tasks)
@@ -31,6 +31,7 @@
         /// Returns a sequence of tasks which will be observed to complete with the same set 
         /// of results as the given input tasks, but in the order in which the original tasks complete. 
         /// </summary>
+        /// <typeparam name="T">The task result type.</typeparam>
         /// <param name="inputTasks">The tasks.</param>
         /// <returns>An enumeration of the completed tasks, in order of completion.</returns>
         /// <remarks>See <seealso cref="https://blogs.msmvps.com/jonskeet/2012/01/16/eduasync-part-19-ordering-by-completion-ahead-of-time/"/>.</remarks>
