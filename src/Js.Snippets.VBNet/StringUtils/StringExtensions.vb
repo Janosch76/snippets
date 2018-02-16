@@ -68,7 +68,7 @@ Namespace StringUtils
         ''' <returns>An object of type <typeparamref name="T"/> whose value is represented by this instance.</returns>
         <Extension>
         Public Function ToEnum(Of T)(value As String, Optional ignoreCase As Boolean = False) As T
-            Return [Enum].Parse(GetType(T), value, ignoreCase)
+            Return CType([Enum].Parse(GetType(T), value, ignoreCase), T)
         End Function
 
     End Module
