@@ -64,6 +64,7 @@
         /// Propagates the status of the given task (which must be completed) to a task completion source 
         /// (which should not be). 
         /// </summary> 
+        /// <typeparam name="T">The task result type.</typeparam>
         /// <param name="completedTask">The completed task.</param>
         /// <param name="completionSource">The task completion source.</param>
         public static void PropagateResult<T>(this Task<T> completedTask, TaskCompletionSource<T> completionSource)

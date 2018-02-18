@@ -5,7 +5,9 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Js.Snippets.CSharp.AsyncUtils;
+    using Js.Snippets.CSharp.DateUtils;
     using Js.Snippets.CSharp.EnumUtils;
+    using Js.Snippets.CSharp.IComparable;
     using Js.Snippets.CSharp.StringUtils;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -38,6 +40,20 @@
             Assert.AreEqual(false, "d".In("a", "b", "c"));
 
             Assert.AreEqual(true, TaskStatus.Canceled.In(TaskStatus.Canceled, TaskStatus.RanToCompletion));
+        }
+
+        [TestMethod]
+        public void IsBetween()
+        {
+            Assert.AreEqual(true, 1.IsBetween(0, 2));
+            Assert.AreEqual(true, 1.IsBetween(1, 1));
+            Assert.AreEqual(false, 1.IsBetween(2, 5));
+        }
+
+        [TestMethod]
+        public void Dates()
+        {
+            Assert.AreEqual(new DateTime(2018,03,09), new DateTime(2018, 02, 18) + 2.Weeks() + 5.Days());
         }
 
         [TestMethod]

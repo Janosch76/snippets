@@ -16,6 +16,11 @@
         /// <returns>The prefix with the specified length.</returns>
         public static string Left(this string value, int length)
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
             if (length < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(length), "Length cannot be negative.");
@@ -37,6 +42,11 @@
         /// <returns>The suffix with the specified length.</returns>
         public static string Right(this string value, int length)
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
             if (length < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(length), "Length cannot be negative.");
@@ -59,6 +69,11 @@
         /// <returns>True if the sequence contains an element that has the specified value; otherwise, false.</returns>
         public static bool In(this string value, params string[] values)
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
             return values.Contains(value);
         }
 

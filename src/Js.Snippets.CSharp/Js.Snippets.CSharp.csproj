@@ -53,7 +53,11 @@
     <Compile Include="AsyncUtils\PeriodicTask.cs" />
     <Compile Include="AsyncUtils\Snapshot.cs" />
     <Compile Include="AsyncUtils\TaskExtensions.cs" />
+    <Compile Include="DateUtils\TimeSpanExtensions.cs" />
     <Compile Include="EnumUtils\EnumExtensions.cs" />
+    <Compile Include="ComparableUtils\ComparableExtensions.cs" />
+    <Compile Include="Exceptions\Extensions.cs" />
+    <Compile Include="RandomUtils\RandomExtensions.cs" />
     <Compile Include="StringUtils\StringExtensions.cs" />
     <Compile Include="Samples.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
