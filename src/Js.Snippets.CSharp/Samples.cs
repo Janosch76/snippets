@@ -88,6 +88,21 @@
             CollectionAssert.AreEqual(new[] { 100, 200, 300 }, results);
         }
 
+        [TestMethod]
+        public async Task SnapshotRefresh()
+        {
+            var initialValue = 0;
+            var snapshot = new Snapshot<int>(() => DelayAndReturn(100), initialValue);
+
+            Assert.AreEqual(initialValue, snapshot.Value);
+            Assert.AreEqual(DateTime.MinValue, snapshot.LastRefreshed);
+
+            await snapshot.Refresh();
+
+            Assert.AreEqual(100, snapshot.Value);
+            Assert.AreNotEqual(DateTime.MinValue, snapshot.LastRefreshed);
+        }
+
         private static async Task<int> DelayAndReturn(int value)
         {
             await Task.Delay(TimeSpan.FromMilliseconds(value));
