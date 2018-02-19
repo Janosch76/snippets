@@ -60,7 +60,7 @@
         /// <summary>
         /// Returns a <see cref="TimeSpan"/> representing the specified number of weeks.
         /// </summary>
-        /// <param name="days">The number of weeks.</param>
+        /// <param name="weeks">The number of weeks.</param>
         /// <returns>A <see cref="TimeSpan"/> representing the specified number of weeks.</returns>
         public static TimeSpan Weeks(this int weeks)
         {

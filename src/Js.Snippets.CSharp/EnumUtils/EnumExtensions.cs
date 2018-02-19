@@ -33,6 +33,16 @@
         public static T Parse<T>(string value, bool ignoreCase = false)
             where T : struct
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            if (!typeof(T).IsEnum)
+            {
+                throw new ArgumentException("Type is not an enum.");
+            }
+
             return (T)Enum.Parse(typeof(T), value, ignoreCase);
         }
     }

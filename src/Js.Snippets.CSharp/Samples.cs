@@ -8,6 +8,7 @@
     using Js.Snippets.CSharp.DateUtils;
     using Js.Snippets.CSharp.EnumUtils;
     using Js.Snippets.CSharp.IComparable;
+    using Js.Snippets.CSharp.RandomUtils;
     using Js.Snippets.CSharp.StringUtils;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -54,6 +55,16 @@
         public void Dates()
         {
             Assert.AreEqual(new DateTime(2018,03,09), new DateTime(2018, 02, 18) + 2.Weeks() + 5.Days());
+            Assert.AreEqual("2018-02-18", new DateTime(2018, 02, 18).ToDateIso());
+            Assert.AreEqual("2018-02-18T20:30:11.9990000+01:00", new DateTime(2018, 02, 18, 19, 30, 11, 999).ToLocalTime().ToDateTimeIso());
+        }
+
+        [TestMethod]
+        public void OneOf()
+        {
+            var rng = new Random();
+            var c = rng.OneOf(1, 2, 3);
+            CollectionAssert.Contains(new[] { 1, 2, 3 }, c);
         }
 
         [TestMethod]
