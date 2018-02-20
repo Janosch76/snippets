@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Js.Snippets.CSharp.AsyncUtils;
+    using Js.Snippets.CSharp.CollectionUtils;
     using Js.Snippets.CSharp.DateUtils;
     using Js.Snippets.CSharp.EnumUtils;
     using Js.Snippets.CSharp.IComparable;
@@ -41,6 +43,17 @@
             Assert.AreEqual(false, "d".In("a", "b", "c"));
 
             Assert.AreEqual(true, TaskStatus.Canceled.In(TaskStatus.Canceled, TaskStatus.RanToCompletion));
+        }
+
+        [TestMethod]
+        public void Batch()
+        {
+            var batches = new[] { 1, 2, 3, 4, 5 }.Batch(2).ToArray();
+
+            Assert.AreEqual(3, batches.Count());
+            CollectionAssert.AreEqual(new List<int>() { 1, 2 }, batches[0]); ;
+            CollectionAssert.AreEqual(new List<int>() { 3, 4 }, batches[1]); ;
+            CollectionAssert.AreEqual(new List<int>() { 5 }, batches[2]); ;
         }
 
         [TestMethod]
