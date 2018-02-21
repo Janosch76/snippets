@@ -51,9 +51,21 @@
             var batches = new[] { 1, 2, 3, 4, 5 }.Batch(2).ToArray();
 
             Assert.AreEqual(3, batches.Count());
-            CollectionAssert.AreEqual(new List<int>() { 1, 2 }, batches[0]); ;
-            CollectionAssert.AreEqual(new List<int>() { 3, 4 }, batches[1]); ;
-            CollectionAssert.AreEqual(new List<int>() { 5 }, batches[2]); ;
+            CollectionAssert.AreEqual(new[] { 1, 2 }, batches[0].ToArray()); 
+            CollectionAssert.AreEqual(new[] { 3, 4 }, batches[1].ToArray()); 
+            CollectionAssert.AreEqual(new[] { 5 }, batches[2].ToArray()); 
+        }
+
+        [TestMethod]
+        public void Segment()
+        {
+            var buckets = new[] { 1, 2, 3, 4, 5 }.Split(2, 3, 7).ToArray();
+
+            Assert.AreEqual(3, buckets.Count());
+            CollectionAssert.AreEqual(new[] { 1, 2 }, buckets[0].ToArray());
+            CollectionAssert.AreEqual(new[] { 3 }, buckets[1].ToArray());
+            CollectionAssert.AreEqual(new[] { 4, 5 }, buckets[2].ToArray());
+
         }
 
         [TestMethod]
