@@ -3,9 +3,16 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports System.IO
 Imports Js.Snippets.VBNet.StringUtils
 Imports Js.Snippets.VBNet.FileUtils
+Imports Js.Snippets.VBNet.DateTimeUtils
 
 <TestClass()>
 Public Class Samples
+
+    <TestMethod>
+    Public Sub Dates()
+        Assert.AreEqual("2018-02-18", New DateTime(2018, 2, 18).ToDateIso())
+        Assert.AreEqual("2018-02-18T20:30:11.9990000+01:00", New DateTime(2018, 2, 18, 19, 30, 11, 999).ToLocalTime().ToDateTimeIso())
+    End Sub
 
     <TestMethod()>
     Public Sub Left()

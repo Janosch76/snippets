@@ -84,6 +84,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateUtils\DateTimeExtensions.vb" />
     <Compile Include="FileUtils\IniFile.vb" />
     <Compile Include="FileUtils\IniFileSection.vb" />
     <Compile Include="FileUtils\IniReader.vb" />
