@@ -18,6 +18,11 @@
         /// <returns>A collection of batches of the given size taken from the source.</returns>
         public static IEnumerable<IEnumerable<T>> Batch<T>(this IEnumerable<T> source, int batchSize)
         {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             return source
                 .Select((v, i) => new { Index = i, Value = v })
                 .GroupBy(item => item.Index / batchSize)
@@ -49,10 +54,60 @@
         public static IEnumerable<IEnumerable<T>> Split<T, TKey>(this IEnumerable<T> source, Func<T, TKey> selector, IList<TKey> splitPoints)
             where TKey : IComparable<TKey>
         {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (selector == null)
+            {
+                throw new ArgumentNullException(nameof(selector));
+            }
+
             return source
                 .Select(v => new { Bucket = splitPoints.Where(p => p.CompareTo(selector(v)) < 0).Count(), Value = v })
                 .GroupBy(item => item.Bucket)
                 .Select(g => g.Select(item => item.Value));
+        }
+
+        /// <summary>
+        /// Splits a collection into segments of equal values
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns>The segmented source.</returns>
+        public static IEnumerable<IEnumerable<int>> Segments(this IEnumerable<int> source)
+        {
+            return source.Segments(v => v);
+        }
+
+        /// <summary>
+        /// Splits a collection into segments of equal values
+        /// </summary>
+        /// <typeparam name="T">The element type.</typeparam>
+        /// <typeparam name="TKey">The key type.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <param name="selector">The key selector.</param>
+        /// <returns>The segmented source.</returns>
+        public static IEnumerable<IEnumerable<T>> Segments<T, TKey>(this IEnumerable<T> source, Func<T, TKey> selector)
+            where TKey : IEquatable<TKey>
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (selector == null)
+            {
+                throw new ArgumentNullException(nameof(selector));
+            }
+
+            while (source.Any())
+            {
+                var current = source.First();
+                var segment = source.TakeWhile(v => selector(v).Equals(selector(current)));
+                source = source.Skip(segment.Count());
+                yield return segment;
+            }
         }
     }
 }

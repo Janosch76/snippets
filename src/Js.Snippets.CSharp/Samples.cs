@@ -51,13 +51,26 @@
             var batches = new[] { 1, 2, 3, 4, 5 }.Batch(2).ToArray();
 
             Assert.AreEqual(3, batches.Count());
-            CollectionAssert.AreEqual(new[] { 1, 2 }, batches[0].ToArray()); 
-            CollectionAssert.AreEqual(new[] { 3, 4 }, batches[1].ToArray()); 
-            CollectionAssert.AreEqual(new[] { 5 }, batches[2].ToArray()); 
+            CollectionAssert.AreEqual(new[] { 1, 2 }, batches[0].ToArray());
+            CollectionAssert.AreEqual(new[] { 3, 4 }, batches[1].ToArray());
+            CollectionAssert.AreEqual(new[] { 5 }, batches[2].ToArray());
         }
 
         [TestMethod]
         public void Segment()
+        {
+            var segments = new[] { 3, 2, 2, 3, 1, 1, 1, 2 }.Segments().ToArray();
+
+            Assert.AreEqual(5, segments.Count());
+            CollectionAssert.AreEqual(new[] { 3 }, segments[0].ToArray());
+            CollectionAssert.AreEqual(new[] { 2, 2 }, segments[1].ToArray());
+            CollectionAssert.AreEqual(new[] { 3 }, segments[2].ToArray());
+            CollectionAssert.AreEqual(new[] { 1, 1, 1 }, segments[3].ToArray());
+            CollectionAssert.AreEqual(new[] { 2 }, segments[4].ToArray());
+        }
+
+        [TestMethod]
+        public void Split()
         {
             var buckets = new[] { 1, 2, 3, 4, 5 }.Split(2, 3, 7).ToArray();
 
@@ -65,7 +78,6 @@
             CollectionAssert.AreEqual(new[] { 1, 2 }, buckets[0].ToArray());
             CollectionAssert.AreEqual(new[] { 3 }, buckets[1].ToArray());
             CollectionAssert.AreEqual(new[] { 4, 5 }, buckets[2].ToArray());
-
         }
 
         [TestMethod]
@@ -79,7 +91,7 @@
         [TestMethod]
         public void Dates()
         {
-            Assert.AreEqual(new DateTime(2018,03,09), new DateTime(2018, 02, 18) + 2.Weeks() + 5.Days());
+            Assert.AreEqual(new DateTime(2018, 03, 09), new DateTime(2018, 02, 18) + 2.Weeks() + 5.Days());
             Assert.AreEqual("2018-02-18", new DateTime(2018, 02, 18).ToDateIso());
             Assert.AreEqual("2018-02-18T20:30:11.9990000+01:00", new DateTime(2018, 02, 18, 19, 30, 11, 999).ToLocalTime().ToDateTimeIso());
         }
@@ -107,7 +119,7 @@
             Assert.AreEqual("20180131", "{Date: yyyyMMdd}".ReplaceTokens(new { Date = new DateTime(2018, 01, 31) }));
             Assert.AreEqual("1", "{Params[1]}".ReplaceTokens(new { Params = new int[] { 0, 1, 2 } }));
             Assert.AreEqual("C:\\Temp\\a.out", "{Params[Folder2]}\\a.out".ReplaceTokens(new { Params = new Dictionary<string, string>() { { "Folder1", "C:\\User" }, { "Folder2", "C:\\Temp" } } }));
-            Assert.AreEqual("1 + {y}", "{x} + {y}".ReplaceTokens(false, new {  x = 1 }));
+            Assert.AreEqual("1 + {y}", "{x} + {y}".ReplaceTokens(false, new { x = 1 }));
 
             var tokenReplacer = new TokenReplacer(new[] { new { Date = new DateTime(2018, 01, 31) } }, true, '%', '%');
             Assert.AreEqual("20180131", tokenReplacer.ReplaceTokens("%Date:yyyyMMdd%"));
