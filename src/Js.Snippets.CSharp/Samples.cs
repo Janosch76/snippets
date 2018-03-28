@@ -81,6 +81,18 @@
         }
 
         [TestMethod]
+        public void SlicesOfMultiDimensionalArray()
+        {
+            var array = new int[2, 2] { { 0, 1 }, { 2, 3} };
+
+            CollectionAssert.AreEqual(new[] { 0, 1 }, array.Row(0).ToArray());
+            CollectionAssert.AreEqual(new[] { 2, 3 }, array.Row(1).ToArray());
+
+            CollectionAssert.AreEqual(new[] { 0, 2 }, array.Column(0).ToArray());
+            CollectionAssert.AreEqual(new[] { 1, 3 }, array.Column(1).ToArray());
+        }
+
+        [TestMethod]
         public void IsBetween()
         {
             Assert.AreEqual(true, 1.IsBetween(0, 2));
