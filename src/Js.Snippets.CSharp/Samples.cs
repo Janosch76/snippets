@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Xml.Linq;
     using Js.Snippets.CSharp.AsyncUtils;
     using Js.Snippets.CSharp.CollectionUtils;
     using Js.Snippets.CSharp.DateUtils;
@@ -12,6 +13,7 @@
     using Js.Snippets.CSharp.IComparable;
     using Js.Snippets.CSharp.RandomUtils;
     using Js.Snippets.CSharp.StringUtils;
+    using Js.Snippets.CSharp.XmlUtils;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
@@ -33,6 +35,28 @@
             Assert.AreEqual("", "abc".Right(0));
             Assert.AreEqual("abc", "abc".Right(5));
             Assert.AreEqual("", "".Right(5));
+        }
+
+        [TestMethod]
+        public void RemoveFirst()
+        {
+            Assert.AreEqual("bc", "abc".RemoveFirst());
+            Assert.AreEqual("abc", "abc".RemoveFirst(0));
+            Assert.AreEqual("bc", "abc".RemoveFirst(1));
+            Assert.AreEqual("c", "abc".RemoveFirst(2));
+            Assert.AreEqual("", "abc".RemoveFirst(3));
+            Assert.AreEqual("", "abc".RemoveFirst(4));
+        }
+
+        [TestMethod]
+        public void RemoveLast()
+        {
+            Assert.AreEqual("ab", "abc".RemoveLast());
+            Assert.AreEqual("abc", "abc".RemoveLast(0));
+            Assert.AreEqual("ab", "abc".RemoveLast(1));
+            Assert.AreEqual("a", "abc".RemoveLast(2));
+            Assert.AreEqual("", "abc".RemoveLast(3));
+            Assert.AreEqual("", "abc".RemoveLast(4));
         }
 
         [TestMethod]
@@ -135,6 +159,14 @@
 
             var tokenReplacer = new TokenReplacer(new[] { new { Date = new DateTime(2018, 01, 31) } }, true, '%', '%');
             Assert.AreEqual("20180131", tokenReplacer.ReplaceTokens("%Date:yyyyMMdd%"));
+        }
+
+        [TestMethod]
+        public void ConvertXmlRepresentations()
+        {
+            var xml = new XElement("items", new XElement("item", new XAttribute("value", "2")));
+
+            Assert.AreEqual(@"<items><item value=""2"" /></items>", xml.ToXmlDocument().InnerXml);
         }
 
         [TestMethod]

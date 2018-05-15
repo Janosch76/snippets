@@ -61,6 +61,68 @@
         }
 
         /// <summary>
+        /// Removes the last character from a string.
+        /// </summary>
+        /// <param name="value">The string value.</param>
+        /// <returns>Returns the string without its last character.</returns>
+        public static string RemoveLast(this string value)
+        {
+            return StringExtensions.RemoveLast(value, 1);
+        }
+
+        /// <summary>
+        /// Removes the last characters from a string.
+        /// </summary>
+        /// <param name="value">The string value.</param>
+        /// <param name="length">The number of trailing characters to remove.</param>
+        /// <returns>Returns the string without its last characters.</returns>
+        public static string RemoveLast(this string value, int length)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            if (value.Length < length)
+            {
+                return string.Empty;
+            }
+
+            return value.Substring(0, value.Length - length);
+        }
+
+        /// <summary>
+        /// Removes the first character from a string.
+        /// </summary>
+        /// <param name="value">The string value.</param>
+        /// <returns>Returns the string without its first character.</returns>
+        public static string RemoveFirst(this string value)
+        {
+            return StringExtensions.RemoveFirst(value, 1); ;
+        }
+
+        /// <summary>
+        /// Removes the initial characters from a string.
+        /// </summary>
+        /// <param name="value">The string value.</param>
+        /// <param name="length">The number of initial characters to remove.</param>
+        /// <returns>Returns the string without its initial characters.</returns>
+        public static string RemoveFirst(this string value, int length)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            if (value.Length < length)
+            {
+                return string.Empty;
+            }
+
+            return value.Substring(length);
+        }
+
+        /// <summary>
         /// Determines whether a sequence contains a specified element 
         /// by using the default equality comparer.
         /// </summary>
