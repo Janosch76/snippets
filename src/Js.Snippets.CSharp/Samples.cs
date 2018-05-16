@@ -122,6 +122,9 @@
             Assert.AreEqual(true, 1.IsBetween(0, 2));
             Assert.AreEqual(true, 1.IsBetween(1, 1));
             Assert.AreEqual(false, 1.IsBetween(2, 5));
+
+            var date = new DateTime(2018, 02, 18);
+            Assert.AreEqual(true, date.IsBetween(new DateTime(2018, 01, 01), new DateTime(2018, 02, 28)));
         }
 
         [TestMethod]

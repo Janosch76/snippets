@@ -31,5 +31,19 @@
         {
             return timestamp.ToString("o");
         }
+
+        /// <summary>
+        /// Determines whether the date/time is in the specified range (inclusive).
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="start">The start time of the range.</param>
+        /// <param name="end">The end time of the range.</param>
+        /// <returns>
+        ///   <c>true</c> if the value is between the specified lower and upper bounds; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsBetween(this DateTime value, DateTime start, DateTime end)
+        {
+            return value.Ticks >= start.Ticks && value.Ticks <= end.Ticks;
+        }
     }
 }
