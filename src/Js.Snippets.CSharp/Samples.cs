@@ -136,6 +136,46 @@
         }
 
         [TestMethod]
+        public void IsWeekend()
+        {
+            Assert.AreEqual(true, new DateTime(2018, 05, 19).IsWeekend(), "Sat");
+            Assert.AreEqual(true, new DateTime(2018, 05, 20).IsWeekend(), "Sun");
+            Assert.AreEqual(false, new DateTime(2018, 05, 21).IsWeekend(), "Mon");
+            Assert.AreEqual(false, new DateTime(2018, 05, 22).IsWeekend(), "Tue");
+            Assert.AreEqual(false, new DateTime(2018, 05, 23).IsWeekend(), "Wed");
+            Assert.AreEqual(false, new DateTime(2018, 05, 24).IsWeekend(), "Thu");
+            Assert.AreEqual(false, new DateTime(2018, 05, 25).IsWeekend(), "Fri");
+        }
+
+        [TestMethod]
+        public void IsWorkingDay()
+        {
+            Assert.AreEqual(false, new DateTime(2018, 05, 19).IsWorkingDay(), "Sat");
+            Assert.AreEqual(false, new DateTime(2018, 05, 20).IsWorkingDay(), "Sun");
+            Assert.AreEqual(true, new DateTime(2018, 05, 21).IsWorkingDay(), "Mon");
+            Assert.AreEqual(true, new DateTime(2018, 05, 22).IsWorkingDay(), "Tue");
+            Assert.AreEqual(true, new DateTime(2018, 05, 23).IsWorkingDay(), "Wed");
+            Assert.AreEqual(true, new DateTime(2018, 05, 24).IsWorkingDay(), "Thu");
+            Assert.AreEqual(true, new DateTime(2018, 05, 25).IsWorkingDay(), "Fri");
+        }
+
+        [TestMethod]
+        public void NextWorkDay()
+        {
+            Assert.AreEqual(new DateTime(2018, 05, 21), new DateTime(2018, 05, 19).NextWorkday(), "Sat");
+            Assert.AreEqual(new DateTime(2018, 05, 21), new DateTime(2018, 05, 20).NextWorkday(), "Sun");
+            Assert.AreEqual(new DateTime(2018, 05, 21), new DateTime(2018, 05, 21).NextWorkday(), "Mon");
+        }
+
+        [TestMethod]
+        public void NextDayOfWeek()
+        {
+            Assert.AreEqual(new DateTime(2018, 05, 21), new DateTime(2018, 05, 19).Next(DayOfWeek.Monday), "Sat");
+            Assert.AreEqual(new DateTime(2018, 05, 21), new DateTime(2018, 05, 20).Next(DayOfWeek.Monday), "Sun");
+            Assert.AreEqual(new DateTime(2018, 05, 21), new DateTime(2018, 05, 21).Next(DayOfWeek.Monday), "Mon");
+        }
+
+        [TestMethod]
         public void OneOf()
         {
             var rng = new Random();

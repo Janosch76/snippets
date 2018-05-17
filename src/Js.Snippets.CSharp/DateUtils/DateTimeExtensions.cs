@@ -45,5 +45,60 @@
         {
             return value.Ticks >= start.Ticks && value.Ticks <= end.Ticks;
         }
+
+        /// <summary>
+        /// Determines if the date is a working day (disregarding holidays...).
+        /// </summary>
+        /// <param name="date">The date.</param>
+        /// <returns>
+        ///   <c>false</c> if the specified date is weekend; otherwise, <c>true</c>.
+        /// </returns>
+        public static bool IsWorkingDay(this DateTime date)
+        {
+            return !date.IsWeekend();
+        }
+
+        /// <summary>
+        /// Determines if the date is a weekend.
+        /// </summary>
+        /// <param name="date">The date.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified date is weekend; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsWeekend(this DateTime date)
+        {
+            return date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday;
+        }
+
+        /// <summary>
+        /// Gets the next workday after today (diregarding holidays...).
+        /// </summary>
+        /// <param name="date">The date.</param>
+        /// <returns>The next workday.</returns>
+        public static DateTime NextWorkday(this DateTime date)
+        {
+            while (!date.IsWorkingDay())
+            {
+                date = date.AddDays(1);
+            }
+
+            return date;
+        }
+
+        /// <summary>
+        /// Determine the next date of a given day of the week. For example, from this date, when is the next Tuesday?
+        /// </summary>
+        /// <param name="date">The date.</param>
+        /// <param name="dayOfWeek">The day of the week to find.</param>
+        /// <returns>The date of the next given day of week.</returns>
+        public static DateTime Next(this DateTime date, DayOfWeek dayOfWeek)
+        {
+            while (date.DayOfWeek != dayOfWeek)
+            {
+                date = date.AddDays(1);
+            }
+
+            return date;
+        }
     }
 }
