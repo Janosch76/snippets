@@ -57,6 +57,7 @@
     <Compile Include="AsyncUtils\TaskExtensions.cs" />
     <Compile Include="CollectionUtils\ArrayExtensions.cs" />
     <Compile Include="CollectionUtils\EnumerableExtensions.cs" />
+    <Compile Include="ComparableUtils\ComparerFactory.cs" />
     <Compile Include="DateUtils\DateTimeExtensions.cs" />
     <Compile Include="DateUtils\TimeSpanExtensions.cs" />
     <Compile Include="EnumUtils\EnumExtensions.cs" />

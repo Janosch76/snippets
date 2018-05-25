@@ -8,6 +8,7 @@
     using System.Xml.Linq;
     using Js.Snippets.CSharp.AsyncUtils;
     using Js.Snippets.CSharp.CollectionUtils;
+    using Js.Snippets.CSharp.ComparableUtils;
     using Js.Snippets.CSharp.DateUtils;
     using Js.Snippets.CSharp.EnumUtils;
     using Js.Snippets.CSharp.IComparable;
@@ -107,7 +108,7 @@
         [TestMethod]
         public void SlicesOfMultiDimensionalArray()
         {
-            var array = new int[2, 2] { { 0, 1 }, { 2, 3} };
+            var array = new int[2, 2] { { 0, 1 }, { 2, 3 } };
 
             CollectionAssert.AreEqual(new[] { 0, 1 }, array.Row(0).ToArray());
             CollectionAssert.AreEqual(new[] { 2, 3 }, array.Row(1).ToArray());
@@ -125,6 +126,15 @@
 
             var date = new DateTime(2018, 02, 18);
             Assert.AreEqual(true, date.IsBetween(new DateTime(2018, 01, 01), new DateTime(2018, 02, 28)));
+        }
+
+        [TestMethod]
+        public void ComparerFromFactory()
+        {
+            var values = new int[] { 3, 5, 2, 4, 2, 1 };
+            var comparer = ComparerFactory.Create<int>((x, y) => y <= x);
+
+            CollectionAssert.AreEqual(new[] { 5, 4, 3, 2, 2, 1 }, values.OrderBy(x => x, comparer).ToArray());
         }
 
         [TestMethod]
