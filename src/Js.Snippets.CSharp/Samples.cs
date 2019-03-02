@@ -99,6 +99,7 @@
         {
             Assert.AreEqual(0, new double[] { }.StdDev());
             Assert.AreEqual(0, new double[] { 1 }.StdDev());
+            Assert.AreEqual(0, new double[] { 1, 1, 1, 1, 1, 1 }.StdDev());
             Assert.AreEqual(50, new[] { 100, 0, 100, 0 }.StdDev(v => v));
         }
 
@@ -205,6 +206,7 @@
         public void ToEnum()
         {
             Assert.AreEqual(TaskStatus.Canceled, "Canceled".ToEnum<TaskStatus>());
+            AssertThrows<ArgumentException>(() => "CANCELED".ToEnum<TaskStatus>());
             Assert.AreEqual(TaskStatus.Canceled, "CANCELED".ToEnum<TaskStatus>(ignoreCase: true));
         }
 
@@ -276,6 +278,27 @@
         {
             await Task.Delay(TimeSpan.FromMilliseconds(value));
             return value;
+        }
+
+        private TException AssertThrows<TException>(Action code) where TException : Exception
+        {
+            try
+            {
+                code();
+            }
+            catch (Exception e)
+            {
+                var expectedException = e as TException;
+                if (expectedException == null)
+                {
+                    Assert.Fail($"Expected exception of type {typeof(TException)}, but {e.GetType()} was raised.");
+                }
+
+                return expectedException;
+            }
+
+            Assert.Fail($"Expected exception of type {typeof(TException)}, but no exception was raised.");
+            return null;
         }
     }
 }

@@ -2,6 +2,9 @@
 {
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Extension methods for arrays
+    /// </summary>
     public static class ArrayExtensions
     {
         /// <summary>
