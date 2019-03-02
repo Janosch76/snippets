@@ -109,5 +109,50 @@
                 yield return segment;
             }
         }
+
+        /// <summary>
+        /// Computes the standard deviation of a series of values
+        /// </summary>
+        /// <param name="source">The values</param>
+        /// <returns>The standard deviation</returns>
+        public static double StdDev(this IEnumerable<double> source)
+        {
+            return source.StdDev(v => v);
+        }
+
+        /// <summary>
+        /// Computes the standard deviation of a series of values
+        /// </summary>
+        /// <typeparam name="T">The value type.</typeparam>
+        /// <param name="source">The values</param>
+        /// <param name="selector">A projection function</param>
+        /// <returns>The standard deviation</returns>
+        /// <seealso cref="https://stackoverflow.com/a/2878000"/>
+        public static double StdDev<T>(this IEnumerable<T> source, Func<T, double> selector)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (!source.Any())
+            {
+                return 0.0;
+            }
+
+            double mean = 0.0;
+            double sum = 0.0;
+            int n = 0;
+            foreach (var s in source)
+            {
+                n++;
+                var value = selector(s);
+                double delta = value - mean;
+                mean += delta / n;
+                sum += delta * (value - mean);
+            }
+
+            return Math.Sqrt(sum / n);
+        }
     }
 }

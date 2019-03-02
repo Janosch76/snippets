@@ -95,6 +95,14 @@
         }
 
         [TestMethod]
+        public void StdDev()
+        {
+            Assert.AreEqual(0, new double[] { }.StdDev());
+            Assert.AreEqual(0, new double[] { 1 }.StdDev());
+            Assert.AreEqual(50, new[] { 100, 0, 100, 0 }.StdDev(v => v));
+        }
+
+        [TestMethod]
         public void Split()
         {
             var buckets = new[] { 1, 2, 3, 4, 5 }.Split(2, 3, 7).ToArray();
