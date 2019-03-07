@@ -1,6 +1,7 @@
 ﻿namespace Js.Snippets.CSharp.StringUtils
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
@@ -98,7 +99,7 @@
         /// <returns>Returns the string without its first character.</returns>
         public static string RemoveFirst(this string value)
         {
-            return StringExtensions.RemoveFirst(value, 1); ;
+            return StringExtensions.RemoveFirst(value, 1);
         }
 
         /// <summary>
@@ -186,6 +187,36 @@
         public static string ReplaceTokens(this string template, bool throwOnTokenValueNotFound, params object[] tokenValueProviders)
         {
             return TokenReplacer.ReplaceTokens(template, throwOnTokenValueNotFound, tokenValueProviders);
+        }
+
+        /// <summary>
+        /// Concatenates the source collection values,using the specified separator string
+        /// </summary>
+        /// <typeparam name="T">The element type</typeparam>
+        /// <param name="source">The source collection</param>
+        /// <param name="separator">The separator string</param>
+        /// <returns>The concatenated string</returns>
+        public static string Join<T>(this IEnumerable<T> source, string separator)
+        {
+            return source.Join(separator, v => v.ToString());
+        }
+
+        /// <summary>
+        /// Concatenates the source collection values,using the specified separator string and formatting
+        /// </summary>
+        /// <typeparam name="T">The element type</typeparam>
+        /// <param name="source">The source collection</param>
+        /// <param name="separator">The separator string</param>
+        /// <param name="selector">The formatting function</param>
+        /// <returns>The concatenated string</returns>
+        public static string Join<T>(this IEnumerable<T> source, string separator, Func<T, string> selector)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            return string.Join(separator, source.Select(v => selector(v)));
         }
     }
 }

@@ -203,11 +203,11 @@
         }
 
         [TestMethod]
-        public void ToEnum()
+        public void EnumParse()
         {
-            Assert.AreEqual(TaskStatus.Canceled, "Canceled".ToEnum<TaskStatus>());
-            AssertThrows<ArgumentException>(() => "CANCELED".ToEnum<TaskStatus>());
-            Assert.AreEqual(TaskStatus.Canceled, "CANCELED".ToEnum<TaskStatus>(ignoreCase: true));
+            Assert.AreEqual(TaskStatus.Canceled, EnumExt.Parse<TaskStatus>("Canceled"));
+            AssertThrows<ArgumentException>(() => EnumExt.Parse<TaskStatus>("CANCELED"));
+            Assert.AreEqual(TaskStatus.Canceled, EnumExt.Parse<TaskStatus>("CANCELED", ignoreCase: true));
         }
 
         [TestMethod]
@@ -222,6 +222,14 @@
 
             var tokenReplacer = new TokenReplacer(new[] { new { Date = new DateTime(2018, 01, 31) } }, true, '%', '%');
             Assert.AreEqual("20180131", tokenReplacer.ReplaceTokens("%Date:yyyyMMdd%"));
+        }
+
+        [TestMethod]
+        public void JoinStrings()
+        {
+            var values = new[] { 1, 2, 3 };
+            Assert.AreEqual("1,2,3", values.Join(","));
+            Assert.AreEqual("'1','2','3'", values.Join(",", v => $"'{v}'"));
         }
 
         [TestMethod]
