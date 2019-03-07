@@ -3,10 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.Caching;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml.Linq;
     using Js.Snippets.CSharp.AsyncUtils;
+    using Js.Snippets.CSharp.CacheUtils;
     using Js.Snippets.CSharp.CollectionUtils;
     using Js.Snippets.CSharp.ComparableUtils;
     using Js.Snippets.CSharp.DateUtils;
@@ -238,6 +240,24 @@
             var xml = new XElement("items", new XElement("item", new XAttribute("value", "2")));
 
             Assert.AreEqual(@"<items><item value=""2"" /></items>", xml.ToXmlDocument().InnerXml);
+        }
+
+        [TestMethod]
+        public void AddOrInsertCachedItem()
+        {
+            ObjectCache cache = MemoryCache.Default;
+            var policy = new CacheItemPolicy() { SlidingExpiration = TimeSpan.FromMinutes(1) };
+            var value = cache.AddOrGetExisting<int>("foo", () => { return 1; }, policy);
+            Assert.AreEqual(1, value);
+        }
+
+        [TestMethod]
+        public async Task AddOrInsertCachedItemAsync()
+        {
+            ObjectCache cache = MemoryCache.Default;
+            var policy = new CacheItemPolicy() { SlidingExpiration = TimeSpan.FromMinutes(1) };
+            var value = await cache.AddOrGetExistingAsync<int>("foo", async () => { await Task.Delay(100); return 1; }, policy);
+            Assert.AreEqual(1, value);
         }
 
         [TestMethod]
