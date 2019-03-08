@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Runtime.Caching;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml.Linq;
@@ -15,6 +17,7 @@
     using Js.Snippets.CSharp.EnumUtils;
     using Js.Snippets.CSharp.IComparable;
     using Js.Snippets.CSharp.RandomUtils;
+    using Js.Snippets.CSharp.StreamUtils;
     using Js.Snippets.CSharp.StringUtils;
     using Js.Snippets.CSharp.XmlUtils;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -258,6 +261,38 @@
             var policy = new CacheItemPolicy() { SlidingExpiration = TimeSpan.FromMinutes(1) };
             var value = await cache.AddOrGetExistingAsync<int>("foo", async () => { await Task.Delay(100); return 1; }, policy);
             Assert.AreEqual(1, value);
+        }
+
+        [TestMethod]
+        public async Task StreamCopyTo()
+        {
+            string result;
+            var progress = new List<long>();
+            var progressReporter = new Progress<long>(bytesRead => progress.Add(bytesRead));
+            using (var source = new MemoryStream())
+            {
+                using (var destination = new MemoryStream())
+                {
+                    using (var writer = new StreamWriter(source, Encoding.ASCII, 1024, leaveOpen: true))
+                    {
+                        await writer.WriteAsync(new string('a', 1000));
+                        await writer.FlushAsync();
+                        source.Position = 0;
+                    }
+
+                    await source.CopyToAsync(destination, 100, CancellationToken.None, progressReporter);
+                    await Task.Delay(50);
+
+                    using (var reader = new StreamReader(destination))
+                    {
+                        destination.Position = 0;
+                        result = await reader.ReadToEndAsync();
+                    }
+                }
+            }
+
+            Assert.AreEqual(new string('a', 1000), result);
+            Assert.AreEqual(10, progress.Count());
         }
 
         [TestMethod]
