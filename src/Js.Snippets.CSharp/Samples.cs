@@ -76,6 +76,17 @@
         }
 
         [TestMethod]
+        public void ToQueryString()
+        {
+            var url = "http://example.com/path/to/page";
+            var queryParams = new Dictionary<string, string>() { { "name", "ferret" }, { "color", "purple" } };
+
+            Assert.AreEqual(
+                "http://example.com/path/to/page?name=ferret&color=purple",
+                url + "?" + queryParams.ToQueryString());
+        }
+
+        [TestMethod]
         public void Batch()
         {
             var batches = new[] { 1, 2, 3, 4, 5 }.Batch(2).ToArray();
@@ -207,12 +218,44 @@
             CollectionAssert.Contains(new[] { 1, 2, 3 }, c);
         }
 
+        public enum State
+        {
+            [System.ComponentModel.Description("Operationn waiting")]
+            Waiting,
+
+            [System.ComponentModel.Description("Operation in progress")]
+            InProgress,
+
+            [System.ComponentModel.Description("Operation cancelled")]
+            Cancelled,
+
+            [System.ComponentModel.Description("Operation finished")]
+            Finished,
+
+            [System.ComponentModel.Description("Operation failed")]
+            Failed,
+        }
+
         [TestMethod]
         public void EnumParse()
         {
-            Assert.AreEqual(TaskStatus.Canceled, EnumExt.Parse<TaskStatus>("Canceled"));
-            AssertThrows<ArgumentException>(() => EnumExt.Parse<TaskStatus>("CANCELED"));
-            Assert.AreEqual(TaskStatus.Canceled, EnumExt.Parse<TaskStatus>("CANCELED", ignoreCase: true));
+            Assert.AreEqual(State.Cancelled, Enums.Parse<State>("Cancelled"));
+            AssertThrows<ArgumentException>(() => Enums.Parse<State>("CANCELLED"));
+            Assert.AreEqual(State.Cancelled, Enums.Parse<State>("CANCELLED", ignoreCase: true));
+        }
+
+        [TestMethod]
+        public void EnumToList()
+        {
+            var states = Enums.ToList<State>();
+            CollectionAssert.AreEqual(new[] { State.Waiting, State.InProgress, State.Cancelled, State.Finished, State.Failed }, states.ToArray());
+        }
+
+        [TestMethod]
+        public void EnumToDescriptionsList()
+        {
+            var states = Enums.ToDictionary<State>().Select(kv => kv.Value);
+            CollectionAssert.AreEqual(new[] { "Operationn waiting", "Operation in progress", "Operation cancelled", "Operation finished", "Operation failed" }, states.ToArray());
         }
 
         [TestMethod]

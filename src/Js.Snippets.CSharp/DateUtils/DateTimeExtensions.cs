@@ -71,7 +71,7 @@
         }
 
         /// <summary>
-        /// Gets the next workday after today (diregarding holidays...).
+        /// Gets the next workday after today (disregarding holidays...).
         /// </summary>
         /// <param name="date">The date.</param>
         /// <returns>The next workday.</returns>
