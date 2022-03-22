@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Js.Snippets.CSharp</RootNamespace>
     <AssemblyName>Js.Snippets.CSharp</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -16,6 +16,7 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -62,6 +63,7 @@
     <Compile Include="AsyncUtils\Snapshot.cs" />
     <Compile Include="AsyncUtils\TaskExtensions.cs" />
     <Compile Include="CacheUtils\ObjectCacheExtensions.cs" />
+    <Compile Include="Collections\Concurrent\ConcurrentHashSet.cs" />
     <Compile Include="CollectionUtils\ArrayExtensions.cs" />
     <Compile Include="CollectionUtils\DictionaryExtensions.cs" />
     <Compile Include="CollectionUtils\EnumerableExtensions.cs" />

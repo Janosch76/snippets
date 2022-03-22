@@ -11,6 +11,7 @@
     using System.Xml.Linq;
     using Js.Snippets.CSharp.AsyncUtils;
     using Js.Snippets.CSharp.CacheUtils;
+    using Js.Snippets.CSharp.Collections.Concurrent;
     using Js.Snippets.CSharp.CollectionUtils;
     using Js.Snippets.CSharp.ComparableUtils;
     using Js.Snippets.CSharp.DateUtils;
@@ -378,6 +379,25 @@
 
             Assert.AreEqual(100, snapshot.Value);
             Assert.AreNotEqual(DateTime.MinValue, snapshot.LastRefreshed);
+        }
+
+        [TestMethod]
+        public async Task ConcurrentHashSetAddRemove()
+        {
+            var set = new ConcurrentHashSet<int>();
+
+            var tasks = Enumerable.Range(0, 10000)
+                .Select(i => AddRemove(i % 3));
+            await Task.WhenAll(tasks.ToArray());
+
+            Assert.AreEqual(0, set.Count);
+
+            async Task AddRemove(int i)
+            {
+                set.Add(i);
+                await Task.Delay(10);
+                set.Remove(i);
+            }
         }
 
         private static async Task<int> DelayAndReturn(int value)
