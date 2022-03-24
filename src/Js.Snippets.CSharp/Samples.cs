@@ -99,6 +99,16 @@
         }
 
         [TestMethod]
+        public void DistinctBy()
+        {
+            var items = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+            var result = items.DistinctBy(v => v % 3);
+
+            CollectionAssert.AreEqual(new[] { 1, 2, 3 }, result.ToArray());
+        }
+
+        [TestMethod]
         public void Segment()
         {
             var segments = new[] { 3, 2, 2, 3, 1, 1, 1, 2 }.Segments().ToArray();

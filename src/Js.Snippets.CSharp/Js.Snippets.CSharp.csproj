@@ -56,11 +56,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AsyncUtils\AsyncEventHandler.cs" />
+    <Compile Include="AsyncUtils\AsyncEventHandlerExtensions.cs" />
     <Compile Include="AsyncUtils\AsyncLazy.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="AsyncUtils\PeriodicTask.cs" />
     <Compile Include="AsyncUtils\Snapshot.cs" />
+    <Compile Include="AsyncUtils\TaskCompletionSourceExtensions.cs" />
     <Compile Include="AsyncUtils\TaskExtensions.cs" />
     <Compile Include="CacheUtils\ObjectCacheExtensions.cs" />
     <Compile Include="Collections\Concurrent\ConcurrentHashSet.cs" />

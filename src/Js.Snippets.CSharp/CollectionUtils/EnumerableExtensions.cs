@@ -10,6 +10,35 @@
     public static class EnumerableExtensions
     {
         /// <summary>
+        /// Determines the unique items from the given collection, according to the specified key selector.
+        /// </summary>
+        /// <typeparam name="T">The element type</typeparam>
+        /// <param name="source">The source collection.</param>
+        /// <param name="keySelector">The key selector.</param>
+        /// <returns>The unique items from the given collection.</returns>
+        public static IEnumerable<T> DistinctBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (keySelector == null)
+            {
+                throw new ArgumentNullException(nameof(keySelector));
+            }
+
+            var knownKeys = new HashSet<TKey>();
+            foreach (var item in source)
+            {
+                if (knownKeys.Add(keySelector(item)))
+                {
+                    yield return item;
+                }
+            }
+        }
+
+        /// <summary>
         /// Splits the source collection into batches of the specified batch size.
         /// </summary>
         /// <typeparam name="T">The element type</typeparam>
